@@ -1,7 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
-import NodeCache from 'node-cache';
+import * as NodeCache from 'node-cache';
 
 @Injectable()
 export class WeatherService {
