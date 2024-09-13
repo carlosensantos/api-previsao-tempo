@@ -30,7 +30,7 @@ export class WeatherService {
       return cachedData; // Retorna do cache
     }
 
-    const url = `${this.apiUrl}?q=${city},${country}&appid=${this.apiKey}&units=metric`;
+    const url = `${this.apiUrl}?q=${city},${country}&appid=${this.apiKey}&units=metric&lang=pt`;
 
     try {
       const response = await this.httpService.get(url).toPromise();
@@ -41,6 +41,24 @@ export class WeatherService {
         throw new HttpException('City or country not found', 404);
       }
       throw new HttpException('Error fetching weather data', 500);
+    }
+  }
+
+  async get5DayForecast(city: string, country: string): Promise<any> {
+    if (!city || !country) {
+      throw new HttpException('City and country are required', 400);
+    }
+  
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city},${country}&appid=${this.apiKey}&units=metric&lang=pt`;
+  
+    try {
+      const response = await this.httpService.get(url).toPromise();
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        throw new HttpException('City or country not found', 404);
+      }
+      throw new HttpException('Error fetching weather forecast', 500);
     }
   }
 }
